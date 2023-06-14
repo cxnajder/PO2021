@@ -1,0 +1,1 @@
+This game is example code from OOP course at Wroclaws University of Science and Technology from 2021
