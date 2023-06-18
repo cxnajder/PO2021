@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdlib>
 
 //class 0 -attack status
 class AttkStatus {
@@ -41,23 +42,27 @@ void Attack::info() const {
 }
 std::string Attack::getName() const { return attk_name; }
 int Attack::use() const {
-    int totllyRandomNumber = 15;
+    int totllyRandomNumber = (std::rand() % (max_dmg - min_dmg + 1)) + min_dmg;
     return totllyRandomNumber;
 }
 
 //cLass 2 - unit with attack
 class Unit{
     std::vector<Attack> attks;
-    int start_hp = 100;
+    const std::string unit_name;
+    const std::string unit_description;
+protected:
+    int start_hp = 50;
     int hp;
-    std::string unit_name;
-    std::string unit_description;
     std::string unit_class = "pessant"; 
 public:
     explicit Unit(
         std::string uname = "The Unnamed",  
         std::string u_descr = "not very talkative",
-        std::vector<Attack> a = {Attack(1, 10, "basic punch", "The simpliest punch - even your mother could throw it")}
+        std::vector<Attack> a = {
+            Attack(1, 5, "basic punch", "The simpliest punch - even your mother could throw it"),
+            Attack(2, 3, "bite", "Uff... there will be scare")
+        }
     );
     void info() const;
     std::string getName() const;
@@ -67,11 +72,9 @@ public:
     void attackVerbous(Unit & u);
 };
 Unit::Unit(std::string uname, std::string u_descr, std::vector<Attack> a):
-    attks(a)
+    attks(a), unit_name(uname), unit_description(u_descr)
 { 
     hp = start_hp;
-    unit_name = uname; 
-    unit_description = u_descr; 
 }
 
 void Unit::info() const{
@@ -110,7 +113,7 @@ std::vector<Attack> Unit::knownAttacks() const{
 }
 AttkStatus Unit::attack(Unit & u) {
     AttkStatus s;
-    int totllyRandomNumber = attks.size()-1;
+    int totllyRandomNumber = std::rand() % attks.size();
     s.deltDmg = attks.at(totllyRandomNumber).use();
     s.attkName = attks.at(totllyRandomNumber).getName();
 
@@ -120,9 +123,27 @@ AttkStatus Unit::attack(Unit & u) {
 }
 void Unit::attackVerbous(Unit & u){
     AttkStatus move_status = attack(u);
-    std::cout<<unit_name<<" "<<unit_class<<" attaks "<<u.unit_name<<" "<<u.unit_class<<" with "<<move_status.attkName<<" dealing "<<move_status.deltDmg<<" dmg.\n";
+    std::cout<<"<"<<unit_class<<" "<<unit_name<<"> attaks <"<<u.unit_class<<" "<<u.unit_name<<"> with ["<<move_status.attkName<<"] dealing {"<<move_status.deltDmg<<" dmg}\n";
 }
 
+class Mage: public Unit
+{
+public:
+    explicit Mage(
+        std::string uname = "The Unnamed",  
+        std::string u_descr = "not very talkative",
+        std::vector<Attack> a = {
+            Attack(9,99,"FIRE BALL", "HOLLY SHIT IM ON FIRE...")
+        }
+    );
+};
+
+Mage::Mage(std::string uname, std::string u_descr, std::vector<Attack> a): Unit(uname, u_descr, a)
+{
+    start_hp = 80;
+    hp = start_hp;
+    unit_class = "mage";
+}
 
 //Class 3 - Team of units
 
@@ -141,8 +162,7 @@ void debugging_test_1(){
     Unit u3("Joe", "The Ripper");
     u3.info();
 
-    std::vector<Attack> a = {a1};
-    Unit u4("Baltazar", "MadMage", a);
+    Mage u4("Baltazar", "MadMage");
     u4.info();
 
     u4.attackVerbous(u3);
