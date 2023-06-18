@@ -1,151 +1,15 @@
 #include <iostream>
-#include <string>
-#include <vector>
-#include <cstdlib>
 
-//class 0 -attack status
-class AttkStatus {
-    public:
-    int deltDmg;
-    std::string attkName;
-};
+#include "Attack/Attack.h"
+#include "Attack/Attack.cpp"
+
+#include "Unit/Unit.h"
+#include "Unit/Unit.cpp"
+
+#include "Unit/Mage/Mage.h"
+#include "Unit/Mage/Mage.cpp"
 
 
-//class 1 - attack
-class Attack {
-    int min_dmg;
-    int max_dmg;
-    std::string attk_name;
-    std::string attk_description;
-public:
-    Attack(int min_d, int max_d, std::string name, std::string descr);
-    void info() const;
-    std::string getName() const;
-    int use() const;
-
-};
-Attack::Attack(int min_d, int max_d, std::string name, std::string descr): 
-    min_dmg(min_d), 
-    max_dmg(max_d)
-{
-    attk_name = name;
-    attk_description = descr;
-}
-void Attack::info() const {
-
-    std::string x = ":";
-
-    std::cout<<x<<"ATTK Name : "<<attk_name<<"\n";
-    std::cout<<x<<"ATTK Descr: "<<attk_description<<"\n";
-    std::cout<<x<<"ATTK Range: "<<min_dmg<<" - "<<max_dmg<<"\n";
-    std::cout<<"\n";
-}
-std::string Attack::getName() const { return attk_name; }
-int Attack::use() const {
-    int totllyRandomNumber = (std::rand() % (max_dmg - min_dmg + 1)) + min_dmg;
-    return totllyRandomNumber;
-}
-
-//cLass 2 - unit with attack
-class Unit{
-    std::vector<Attack> attks;
-    const std::string unit_name;
-    const std::string unit_description;
-protected:
-    int start_hp = 50;
-    int hp;
-    std::string unit_class = "pessant"; 
-public:
-    explicit Unit(
-        std::string uname = "The Unnamed",  
-        std::string u_descr = "not very talkative",
-        std::vector<Attack> a = {
-            Attack(1, 5, "basic punch", "The simpliest punch - even your mother could throw it"),
-            Attack(2, 3, "bite", "Uff... there will be scare")
-        }
-    );
-    void info() const;
-    std::string getName() const;
-    bool isDead() const;
-    std::vector<Attack> knownAttacks() const;
-    AttkStatus attack(Unit & u);
-    void attackVerbous(Unit & u);
-};
-Unit::Unit(std::string uname, std::string u_descr, std::vector<Attack> a):
-    attks(a), unit_name(uname), unit_description(u_descr)
-{ 
-    hp = start_hp;
-}
-
-void Unit::info() const{
-
-    std::string frame = "";
-    int frame_len = 20;
-    char frame_char = '.';
-    for  (int i = 0; i < frame_len; ++i){
-        frame += frame_char;
-    }
-
-    std::cout<<frame<<"\n";
-
-    std::string  x = "";
-
-    std::cout<<x<<"UNIT Name  : "<<unit_name<<"\n";
-    std::cout<<x<<"UNIT Descr : "<<unit_description<<"\n";
-    std::cout<<x<<"UNIT Class : "<<unit_class<<"\n";
-    std::cout<<x<<"UNIT HP    : "<<hp<<" / "<<start_hp<<"\n";
-    std::cout<<x<<"UNIT Attks : \n";
-
-    for  (int i = 0; i < attks.size(); ++i){
-
-        
-        attks.at(i).info();
-    }
-
-}
-std::string Unit::getName() const { return unit_name; }
-bool Unit::isDead() const {
-    if ( hp < 1 ) { return true; }
-    return false;
-}
-std::vector<Attack> Unit::knownAttacks() const{
-    return attks;
-}
-AttkStatus Unit::attack(Unit & u) {
-    AttkStatus s;
-    int totllyRandomNumber = std::rand() % attks.size();
-    s.deltDmg = attks.at(totllyRandomNumber).use();
-    s.attkName = attks.at(totllyRandomNumber).getName();
-
-    u.hp -= s.deltDmg;
-
-    return s;
-}
-void Unit::attackVerbous(Unit & u){
-    AttkStatus move_status = attack(u);
-    std::cout<<"<"<<unit_class<<" "<<unit_name<<"> attaks <"<<u.unit_class<<" "<<u.unit_name<<"> with ["<<move_status.attkName<<"] dealing {"<<move_status.deltDmg<<" dmg}\n";
-}
-
-class Mage: public Unit
-{
-public:
-    explicit Mage(
-        std::string uname = "The Unnamed",  
-        std::string u_descr = "not very talkative",
-        std::vector<Attack> a = {
-            Attack(9,99,"FIRE BALL", "HOLLY SHIT IM ON FIRE...")
-        }
-    );
-};
-
-Mage::Mage(std::string uname, std::string u_descr, std::vector<Attack> a): Unit(uname, u_descr, a)
-{
-    start_hp = 80;
-    hp = start_hp;
-    unit_class = "mage";
-}
-
-//Class 3 - Team of units
 
 void debugging_test_1(){
     Attack a1(100,110,"FIRE BALL", "HOLLY SHIT IM ON FIRE...");
