@@ -17,8 +17,6 @@
 
 
 //TODO:
-//
-//other classes: warrior/fighter, ranger
 //do a factory: "ChampSelect"
 //TB game with units
 //teams of units ?
@@ -58,6 +56,18 @@ void debug_test_2(){
     r1.info();
 
     Warrior w1;
+    w1.info();
+
+    w1.attackVerbous(&p1);
+    p1.info();
+
+    w1.attackVerbous(&m1);
+    m1.info();
+
+    w1.attackVerbous(&r1);
+    r1.info();
+
+    w1.attackVerbous(&w1); //should this be allowed ??
     w1.info();
 }
 
