@@ -33,6 +33,7 @@ public:
     void info() const;
     std::string getName() const;
     bool isDead() const;
+    bool isAlive() const;
     std::vector<Attack> knownAttacks() const;
     AttkStatus attack(Unit * u);
     void attackVerbous(Unit * u);

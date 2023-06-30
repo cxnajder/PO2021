@@ -41,8 +41,13 @@ void Unit::info() const{
 
 }
 std::string Unit::getName() const { return unit_name; }
+
 bool Unit::isDead() const {
     if ( hp < 1 ) { return true; }
+    return false;
+}
+bool Unit::isAlive() const {
+    if ( hp > 0 ) { return true; }
     return false;
 }
 std::vector<Attack> Unit::knownAttacks() const{
