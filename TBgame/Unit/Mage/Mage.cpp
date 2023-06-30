@@ -7,7 +7,7 @@ Mage::Mage(std::string uname, std::string u_descr, std::vector<Attack> a): Unit(
 {
     start_hp = 80;
     hp = start_hp;
-    unit_class = "mage";
+    class_name = UNIT_CLASSNAME_::M;
 }
 
 #endif

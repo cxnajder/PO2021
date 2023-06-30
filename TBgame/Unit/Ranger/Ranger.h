@@ -1,17 +1,17 @@
-#ifndef MAGE_H_
-#define MAGE_H_
+#ifndef RANGER_H_
+#define RANGER_H_
 
 #include "../Unit.h"
 #include "../Unit.cpp"
 
-class Mage: public Unit
+class Ranger: public Unit
 {
 public:
-    explicit Mage(
+    explicit Ranger(
         std::string uname = "The Unnamed",  
         std::string u_descr = "not very talkative",
         std::vector<Attack> a = {
-            Attack(9,99,"FIRE BALL", "HOLLY S*** IM ON FIRE...")
+            Attack(40,50,"SILVER BOLT", "Good for Werwolfs and stuff")
         }
     );
 };
