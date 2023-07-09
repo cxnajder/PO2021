@@ -37,6 +37,7 @@ public:
     std::vector<Attack> knownAttacks() const;
     AttkStatus attack(Unit * u);
     void attackVerbous(Unit * u);
+    virtual ~Unit() {}
 };
 
 #endif
